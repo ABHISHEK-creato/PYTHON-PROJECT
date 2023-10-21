@@ -1,0 +1,31 @@
+import string
+import secrets
+
+def generate_password(length=12):
+    characters = string.ascii_letters + string.digits + string.punctuation
+    while True:
+        password = ''.join(secrets.choice(characters) for i in range(length))
+        if (
+            any(c.islower() for c in password)
+            and any(c.isupper() for c in password)
+            and sum(c.isdigit() for c in password) >= 3
+            and sum(c in string.punctuation for c in password) >= 1
+        ):
+            return password
+
+def generate_multiple_passwords(count, length=12):
+    passwords = [generate_password(length) for _ in range(count)]
+    return passwords
+
+if __name__ == "__main__":
+    try:
+        num_passwords = int(input("Enter the number of passwords to generate: "))
+        password_length = int(input("Enter the length of each password: "))
+        if num_passwords <= 0 or password_length <= 0:
+            print("Please enter valid values for the number of passwords and password length.")
+        else:
+            generated_passwords = generate_multiple_passwords(num_passwords, password_length)
+            for i, password in enumerate(generated_passwords, start=1):
+                print(f"Password {i}: {password}")
+    except ValueError:
+        print("Please enter valid numeric values for the number of passwords and password length.")
